@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+requests
+beautifulsoup4
+jinja2
+qdrant-client
+llama-index
+llama-index-vector-stores-qdrant
+llama-index-llms-cerebras
+llama-index-embeddings-huggingface
+fastembed
+pydantic

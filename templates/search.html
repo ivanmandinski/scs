@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ title }}</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 2rem; }
+    form { display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+    input[type="text"] { flex: 1; padding: .6rem .8rem; border: 1px solid #ddd; border-radius: .5rem; }
+    button, input[type="number"] { padding: .6rem .8rem; border: 1px solid #ddd; border-radius: .5rem; background: #fafafa; }
+    .result { padding: 1rem; border: 1px solid #eee; border-radius: .75rem; margin-bottom: .75rem; }
+    .result h3 { margin: 0 0 .25rem 0; font-size: 1.05rem; }
+    .meta { color: #666; font-size: .9rem; margin-bottom: .4rem; }
+    .score { font-size: .8rem; color: #888; }
+    .error { color: #b00020; padding: .75rem; border: 1px solid #f3c; background: #fff6fa; border-radius: .5rem; }
+  </style>
+</head>
+<body>
+  <h1>{{ title }}</h1>
+  <form method="get">
+    <input type="text" name="q" placeholder="Search SCS Engineers…" value="{{ q|e }}">
+    <label>k <input type="number" name="k" value="{{ k }}" min="1" max="50"></label>
+    <label>sparse_k <input type="number" name="sparse_k" value="{{ sparse_k }}" min="1" max="200"></label>
+    <label>alpha <input type="number" step="0.1" name="alpha" value="{{ alpha }}" min="0" max="1"></label>
+    <button type="submit">Search</button>
+  </form>
+
+  {% if error %}
+    <div class="error">Error: {{ error }}</div>
+  {% endif %}
+
+  {% if results %}
+    <div class="results">
+      {% for r in results %}
+        <div class="result">
+          <div class="score">score: {{ r.score }}</div>
+          {% set m = r.metadata or {} %}
+          {% if m.url %}
+            <h3><a href="{{ m.url }}" target="_blank" rel="noopener">{{ m.title or m.url }}</a></h3>
+          {% elif m.title %}
+            <h3>{{ m.title }}</h3>
+          {% endif %}
+          <div class="meta">
+            {% if m.site %}<span>site: {{ m.site }}</span>{% endif %}
+            {% if m.date %}<span> • date: {{ m.date }}</span>{% endif %}
+          </div>
+          <p>{{ r.text[:450] }}{% if r.text|length > 450 %}…{% endif %}</p>
+        </div>
+      {% endfor %}
+    </div>
+  {% elif q %}
+    <p>No results yet.</p>
+  {% endif %}
+</body>
+</html>
