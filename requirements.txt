@@ -6,7 +6,6 @@ jinja2
 qdrant-client==1.9.2
 llama-index==0.11.14
 llama-index-vector-stores-qdrant==0.3.1
-llama-index-llms-cerebras==0.1.1
 llama-index-embeddings-fastembed==0.2.0
 fastembed==0.2.7
 pydantic
